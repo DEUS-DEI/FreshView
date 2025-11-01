@@ -1,0 +1,9 @@
+{
+  "name": "freshview",
+  "version": "2.1.0",
+  "private": true,
+  "scripts": {
+    "build:sw": "node scripts/build-sw.js"
+  },
+  "devDependencies": {}
+}

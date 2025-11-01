@@ -1,5 +1,5 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
 
     "name": "FreshView for YouTube™",
     "short_name": "FreshView for YouTube™",
@@ -7,12 +7,7 @@
     "version": "2.1.0",
 
     "background": {
-        "scripts": [
-            "js/constants.js",
-            "js/storage.js",
-            "js/background.js"
-        ],
-        "persistent": false
+        "service_worker": "dist/sw.js"
     },
 
     "commands": {
@@ -49,13 +44,12 @@
        "128": "img/icon128.png"
     },
 
-    "options_ui": {
-       "browser_style": true,
-       "page": "html/options.html",
-       "open_in_tab": true
-    },
+     "options_ui": {
+         "page": "html/options.html",
+         "open_in_tab": true
+     },
 
-    "page_action": {
+    "action": {
         "default_icon": {
             "16": "img/icon16.png",
             "19": "img/icon19.png",
@@ -70,5 +64,15 @@
     "permissions": [
         "storage",
         "tabs"
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "freshview@deus-dei",
+            "strict_min_version": "109.0",
+            "data_collection_permissions": ["telemetry"]
+        }
+    },
+    "host_permissions": [
+        "*://*.youtube.com/*"
     ]
 }

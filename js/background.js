@@ -37,9 +37,30 @@
  */
 function onMessageListener(message, sender, _sendResponse) {
     if (message.type === "showPageAction") {
-        chrome.pageAction.show(sender.tab.id);
+        // In MV3 pageAction was replaced by action; enable the action for this tab.
+        try {
+            if (sender && sender.tab && sender.tab.id !== undefined) {
+                chrome.action.enable(sender.tab.id);
+            }
+        } catch (e) {
+            // Swallow errors in service worker context (best-effort)
+            console.error("onMessageListener: failed to enable action:", e);
+        }
     }
 }
+
+// Disable the action by default on install so it behaves like the old page_action
+chrome.runtime.onInstalled.addListener(() => {
+    try {
+        chrome.tabs.query({}, (tabs) => {
+            for (const t of tabs) {
+                try { chrome.action.disable(t.id); } catch (e) { /* ignore */ }
+            }
+        });
+    } catch (e) {
+        console.error("onInstalled: failed to disable actions:", e);
+    }
+});
 
 /**
  * Sends a message to a content script when the URL of its YouTube page changes.
